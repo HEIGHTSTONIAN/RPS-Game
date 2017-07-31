@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rock, Paper, Scissors</title>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <!--PSEUDOCODE I need the user to make a choice
+Computer to make a choice
+Capture those choices
+Compare these choices, and determine a win, or tie
+Display the result of the user
+ -->
+    <div>App is working</div>
+    
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB0Tfvw3j1vHHZ3Hh9qds3pgi6wo4nWq_Y",
+    authDomain: "rps-multiplayer-97299.firebaseapp.com",
+    databaseURL: "https://rps-multiplayer-97299.firebaseio.com",
+    projectId: "rps-multiplayer-97299",
+    storageBucket: "",
+    messagingSenderId: "427506108273"
+  };
+  firebase.initializeApp(config);
+  var authorize = firebase.auth();
+    authorize.signInAnonymously();
+    authorize.AuthSignedIn
+</script>
+    </script>
+    <script type="text/javascript">
+    //alert("working!");//
+
+    //Also, we need an alert pop up anytime someone presses a key on the keyboard. Now I want to capture what the user is actually pressing - 2 Create an onkeyup function to capture log the keys pressed on the keyboard. 3 now create an array of options for the computer so its rps 4 now have the computer choose at randome from the array. stay in the brackets and start w var computerGuess 5 write an if statement with || boolean operators 6 make some alerts to ask the user to choose rps vs other letters. alert should say you want this to be chosen. once you test it, you can take down the alerts and move one they look like this if (userguess=="r" || userguess=="p" || userguess=="s") {
+    //		alert("chosen correctly!"); //
+    //	} else { //
+    //		alert("Please choose r, p or s"); //
+    //	} //
+    //6 now remove the alerts and write the computer logic that compares the user guess variable to the computer guess variable, based on how rps works
+    //now write all the if statements based on the user choice comparison//
+
+    var options = ["r", "p", "s"];
+
+    //now we need to keep track of scores so we're going to create variables that will hold the information for us
+    var wins = 0;
+    var losses = 0;
+    var ties = 0;
+    //now i'm going to get rid of the alerts and in place of them, i'm going to increment these counters i've created. so let's see the win lose or tie that occurs. 
+
+
+    document.onkeyup = function(event) {
+        
+    var userguess = String.fromCharCode(event.keyCode).
+        toLowerCase();
+
+
+        var computerGuess = options[Math.floor(Math.random() * options.length)];
+
+
+//so what we're saying here is every time a user presses a key, i want you to determine a win or a loss when comparing it to the randome comperized guess and increment these variables as needed
+
+        if (userguess== 'r' || userguess== 'p' || userguess== 's') {
+        	if ((userguess=='r') && (computerGuess=='s')) {
+        		wins++;
+        	}
+        	if ((userguess=='r') && (computerGuess=='p')) {
+        		losses++;
+        	}
+        	if ((userguess=='s') && (computerGuess=='p')) {
+        		wins++;
+        	}
+        	if ((userguess=='s') && (computerGuess=='r')) {
+        		losses++;
+        	}
+        	if ((userguess=='p') && (computerGuess=='s')) {
+        		losses++;
+        	}
+        	if ((userguess=='p') && (computerGuess=='r')) {
+        		wins++;
+        	}
+        	if ((userguess==computerGuess)) {
+        		ties++;
+        	}
+        } else {
+        	alert("Please choose r, p or s");
+        }
+//so now we have to create a variable that we want displayed once the user starts pressing keys. we're using our basic html inside of some wierd looking quotes with concatination for our variables. so when we insert html inside of .js, we have to put everything inside of quote marks. what we want here is i want a paragragh each for wins losses and ties. and to update it when the user presses a key as well. 
+
+//i want you to update this variable html w the correct wins losses and ties
+        var html = "<p>Press r, p, or s to start playing</p>" + "<p>wins: " + wins + "</p>" + "<p>losses: " + losses + "</p>" + "<p>ties: " + ties + "</p>";
+
+//now wew need a document.querySelector() and target the div we put the original paragraph inside of to insert the html.
+
+//i also want you to update var html with the wins losses and ties as they update too. and then i want you to garge the div game and replace all of the html inside with this new variable we've created, called html 
+
+		document.querySelector('#game').innerHTML = html;
+
+    }
+
+</script>
+</body>
+
+</html>
