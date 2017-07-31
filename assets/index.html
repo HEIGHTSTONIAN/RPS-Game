@@ -59,28 +59,49 @@ Display the result of the user
             ref.update(data);
     };
     function startGame(game, userID){
-        console.log("starting the game");
-        $("#startButton").show();
-        /* wait for user opponent */
-        console.log(game);
-        firebase.database().ref("gameRoom/"+game.id).on("value", function(e){
-          console.log(e.val(), "is this null");
-          var allUsers = e.val();
-          if(allUsers !== null){
-             var iDS = Object.keys(allUsers);
-              console.log(iDS);
-              if(iDS.length == 1){
-                 if(iDS[0] === userID){
-                     console.log('waiting for a player to arrive');
-                 }
-              }
-              else if(iDS.length == 2){
-                 console.log('player has arrived'); 
-              }  
-          } else {
-              console.log('game is starting');
-          }
+        console.log("starting the app");
+        var newBtn = $("#startButton");
+        var gameBtns = $(".gameButtons");
+        
+        gameBtns.on("click", function(e){
+            sendDataToDatabase(firebase.database().ref("players/"+userID), { gameChoice: e.target.id })
         });
+        newBtn.show();
+        newBtn.on("click", function(){
+            console.log("working");
+            gameBtns.show();
+            /* wait for user opponent */
+            console.log(game);
+            firebase.database().ref("players/"+userID).on('child_changed', function(snapshot){
+                console.log(snapshot.val());
+            })
+            firebase.database().ref("gameRoom/"+game.id).on("value", function(e){
+              var allUsers = e.val();
+                console.log(allUsers);
+                /* conditions */
+              if(allUsers !== null){
+                  var iDS = Object.keys(allUsers);
+                  console.log(iDS);
+                  if(iDS.length == 1){
+                     if(iDS[0] === userID){
+                         console.log('waiting for a player to arrive');
+                     }
+                  }
+                  else if(iDS.length == 2){
+                     console.log('player has arrived');
+                      console.log(iDS);
+                      var filterOpponent = iDS.filter(function(each){ return each != userID });
+                      firebase.database().ref("gameRoom/"+filterOpponent[0]).on("value", function(snapshot){
+                          console.log(snapshot.val());
+                      });
+                  }  
+              } else {
+                  console.log('game is going');
+                  
+              }
+            });
+        });
+        
     }
     function findOpenGame(userID, player, ref, gameKey, game){
         firebase.database().ref("gameRoom").once("value", function(e){
@@ -157,7 +178,6 @@ Display the result of the user
             } else {
                console.log('no current user info has been pushed!');
                var newUser = {}; 
-               startButton.hide();
                newUser[user.uid]= { userName: "player" + user.uid, currentGameRoom: "none", isPlaying: false };
                sendDataToDatabase(playerRef, newUser);
                 //set player in a game room or create one
@@ -166,14 +186,15 @@ Display the result of the user
                 findOpenGame(user.uid,player, gameRoomRef, gameRoomKey, game);
             }
         })
-        
-
     }  
   });
 </script>
 </body>
 <style>
     #startButton{
+        display: none;
+    }
+    .gameButtons{
         display: none;
     }
 </style>
