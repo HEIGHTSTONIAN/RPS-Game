@@ -93,6 +93,43 @@ Display the result of the user
                       var filterOpponent = iDS.filter(function(each){ return each != userID });
                       firebase.database().ref("players/"+filterOpponent[0]).on("value", function(snapshot){
                           console.log(snapshot.val(), "what is this");
+                          var opponent = snapshot.val();
+                          var oChoice = opponent.gameChoice;
+                          var userChoice = "paper"; //our current choice
+                          if(oChoice == "rock"){
+                            if(userChoice == "paper"){
+                                console.log("you have won");
+                            } 
+                            else if(userChoice == "scissors"){
+                                console.log("you have lost");
+                            } else{
+                                console.log("you have tied");
+                            }
+                            
+                          }
+                          else if(oChoice == "paper"){
+                            if(userChoice == "paper"){
+                                console.log("you have tied");
+                            } 
+                            else if(userChoice == "scissors"){
+                                console.log("you have won");
+                            } else{
+                                console.log("you have lost");
+                            }
+                            
+                          }
+                          else if(oChoice == "scissors"){
+                            if(userChoice == "paper"){
+                                console.log("you have lost");
+                            } 
+                            else if(userChoice == "scissors"){
+                                console.log("you have tied");
+                            } else{
+                                console.log("you have won");
+                            }
+                            
+                          }
+                        
                       });
                   }  
               } else {
